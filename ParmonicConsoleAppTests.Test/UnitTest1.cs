@@ -119,5 +119,25 @@ namespace ParmonicConsoleAppTests.Test
             programManager.Run(new string[] { });
 
         }
+        [Theory]
+        [InlineData("13")]
+        public void TestForValidConditionButNotdivideby3or5(string input)
+        {
+            consoleManager.UserInputs.Enqueue(input);
+            consoleManager.UserInputs.Enqueue(new ConsoleKeyInfo());
+
+            List<string> expectedOutput = new List<string>();
+            expectedOutput.Add("Please enter a valid int number: ");
+            expectedOutput.Add("Please enter a valid int number: 13\r\n");
+            expectedOutput.Add("Please enter a valid int number: 13\r\n13\r\n");
+
+
+            consoleManager.OutputsUpdated += (int outputEntryNumber) => {
+                Assert.Equal(expectedOutput[outputEntryNumber - 1], consoleManager.ToString());
+            };
+
+            programManager.Run(new string[] { });
+
+        }
     }
 }
